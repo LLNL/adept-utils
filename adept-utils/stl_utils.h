@@ -41,7 +41,6 @@
 // This file contains some utility functions for dealing with the STL.
 // ====================================================================================
 
-
 /// Functor to get the first element of a pair.  Use with STL functions like transform().
 struct get_first {
   template <typename P>

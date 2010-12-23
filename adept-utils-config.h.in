@@ -13,6 +13,9 @@
 // Define if the POSIX gettimeofday() function is available. 
 #cmakedefine ADEPT_UTILS_HAVE_GETTIMEOFDAY
 
+// Define if Mac OS X Mach timers are available.
+#cmakedefine ADEPT_UTILS_HAVE_MACH_TIME
+
 // Muster version information -- numerical and a version string.
 #define ADEPT_UTILS_MAJOR_VERSION @ADEPT_UTILS_MAJOR_VERSION@
 #define ADEPT_UTILS_MINOR_VERSION @ADEPT_UTILS_MINOR_VERSION@
