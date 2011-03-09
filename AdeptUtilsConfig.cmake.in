@@ -1,0 +1,46 @@
+# - AdeptUtils: ADEPT Utiltity Libraries
+#
+#=============================================================================
+# AdeptUtils is a library for code commonly used by LLNL tool projects.
+# Currently it contains code for timing, dealing with matrices, and some
+# useful headers for dealing with the STL in C++ tools.
+#
+#=== Usage ===================================================================
+# This file allows Adept Utils to be automatically detected by other libraries
+# using CMake.  To build with Adept Utils, you can do one of two things:
+# 
+#   1. Set the AdeptUtils_DIR environment variable to the root of the Adept Utils
+#      installation.  If you loaded AdeptUtils through a dotkit, this may already
+#      be set, and AdeptUtils will be autodetected by CMake.
+#
+#   2. Configure your proeject with this option:
+#      -D AdeptUtils_DIR=/path/to/dir/containing/this/file
+#
+# If you have done either of these things, then CMake should automatically find
+# and include this file when you call find_package(AdeptUtils) from your 
+# CMakeLists.txt file.
+#
+if (NOT AdeptUtils_CONFIG_LOADED)
+  set(AdeptUtils_CONFIG_LOADED TRUE)
+
+  # Boost configuration found for this install of adept utils
+  set(AdeptUtils_HAVE_Boost         @Boost_FOUND@)
+  set(AdeptUtils_Boost_INCLUDE_DIRS @Boost_INCLUDE_DIRS@)
+
+  # Includes needed to use Adept Utils
+  set(AdeptUtils_INCLUDE_PATH @CMAKE_INSTALL_PREFIX@/include ${AdeptUtils_Boost_INCLUDE_DIRS})
+  set(AdeptUtils_LIB_PATH     @CMAKE_INSTALL_PREFIX@/lib)
+
+  # AdeptUtilsTiming library -- just the C timing calls.
+  add_library(AdeptUtilsTiming UNKNOWN IMPORTED)
+  set_target_properties(AdeptUtilsTiming PROPERTIES 
+    IMPORTED_LOCATION @CMAKE_INSTALL_PREFIX@/lib/@timing_LIBRARY@)
+
+  # Full AdeptUtils library -- include C++ classes.  This is automatically linked with 
+  # the dependent timing library.
+  add_library(AdeptUtils UNKNOWN IMPORTED)
+  set_target_properties(AdeptUtils PROPERTIES
+    IMPORTED_LOCATION @CMAKE_INSTALL_PREFIX@/lib/@adept-utils_LIBRARY@
+    IMPORTED_LINK_DEPENDENT_LIBRARIES AdeptUtilsTiming)
+
+endif()
