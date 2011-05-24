@@ -28,7 +28,7 @@ if (NOT AdeptUtils_CONFIG_LOADED)
   set(AdeptUtils_Boost_INCLUDE_DIRS @Boost_INCLUDE_DIRS@)
 
   # Includes needed to use Adept Utils
-  set(AdeptUtils_INCLUDE_PATH @CMAKE_INSTALL_PREFIX@/include ${AdeptUtils_Boost_INCLUDE_DIRS})
+  set(AdeptUtils_INCLUDE_PATH @CMAKE_INSTALL_PREFIX@/include)
   set(AdeptUtils_LIB_PATH     @CMAKE_INSTALL_PREFIX@/lib)
 
   # AdeptUtilsTiming library -- just the C timing calls.
