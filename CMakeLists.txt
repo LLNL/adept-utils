@@ -58,4 +58,6 @@ configure_file(
   ${PROJECT_SOURCE_DIR}/AdeptUtilsConfig.cmake.in
   ${PROJECT_BINARY_DIR}/AdeptUtilsConfig.cmake
   @ONLY)
+
 install(FILES ${PROJECT_BINARY_DIR}/AdeptUtilsConfig.cmake DESTINATION lib/cmake/AdeptUtils)
+install(EXPORT AdeptUtils-libs                             DESTINATION lib/cmake/AdeptUtils)

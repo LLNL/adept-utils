@@ -42,9 +42,15 @@ if (NOT AdeptUtils_CONFIG_LOADED)
   set(AdeptUtils_HAVE_Boost         @Boost_FOUND@)
   set(AdeptUtils_Boost_INCLUDE_DIRS @Boost_INCLUDE_DIRS@)
 
+  # Install layout
+  set(AdeptUtils_INSTALL_PREFIX @CMAKE_INSTALL_PREFIX@)
+  set(AdeptUtils_INCLUDE_DIR    ${AdeptUtils_INSTALL_PREFIX}/include)
+  set(AdeptUtils_LIB_DIR        ${AdeptUtils_INSTALL_PREFIX}/lib)
+  set(AdeptUtils_CMAKE_DIR      ${AdeptUtils_INSTALL_PREFIX}/lib/cmake/AdeptUtils)
+
   # Includes needed to use Adept Utils
-  set(AdeptUtils_INCLUDE_PATH @CMAKE_INSTALL_PREFIX@/include)
-  set(AdeptUtils_LIB_PATH     @CMAKE_INSTALL_PREFIX@/lib)
+  set(AdeptUtils_INCLUDE_PATH ${AdeptUtils_INCLUDE_DIR})
+  set(AdeptUtils_LIB_PATH     ${AdeptUtils_LIB_DIR})
 
   # Library targets imported from file
   include(${AdeptUtils_CMAKE_DIR}/AdeptUtils-libs.cmake)
