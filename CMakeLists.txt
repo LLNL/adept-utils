@@ -1,7 +1,7 @@
 ###############################################################
 # Adept Utilities
 #
-# This project is a set of libraries for commonly useful 
+# This project is a set of libraries for commonly useful
 # routines for ADEPT code projects.
 ###############################################################
 project(adept-utils)
@@ -41,7 +41,7 @@ configure_file(
   ${PROJECT_BINARY_DIR}/adept-utils-config.h)
 install(FILES ${PROJECT_BINARY_DIR}/adept-utils-config.h DESTINATION include)
 
-# Configure subdirectories here, after everything else, so that they 
+# Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.
 add_subdirectory(timing)
 if (Boost_FOUND)
@@ -58,4 +58,4 @@ configure_file(
   ${PROJECT_SOURCE_DIR}/AdeptUtilsConfig.cmake.in
   ${PROJECT_BINARY_DIR}/AdeptUtilsConfig.cmake
   @ONLY)
-install(FILES ${PROJECT_BINARY_DIR}/AdeptUtilsConfig.cmake DESTINATION lib/AdeptUtils)
+install(FILES ${PROJECT_BINARY_DIR}/AdeptUtilsConfig.cmake DESTINATION lib/cmake/AdeptUtils)

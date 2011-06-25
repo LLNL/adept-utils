@@ -8,7 +8,7 @@
 #=== Usage ===================================================================
 # This file allows Adept Utils to be automatically detected by other libraries
 # using CMake.  To build with Adept Utils, you can do one of two things:
-# 
+#
 #   1. Set the AdeptUtils_DIR environment variable to the root of the Adept Utils
 #      installation.  If you loaded AdeptUtils through a dotkit, this may already
 #      be set, and AdeptUtils will be autodetected by CMake.
@@ -17,8 +17,23 @@
 #      -D AdeptUtils_DIR=/path/to/dir/containing/this/file
 #
 # If you have done either of these things, then CMake should automatically find
-# and include this file when you call find_package(AdeptUtils) from your 
+# and include this file when you call find_package(AdeptUtils) from your
 # CMakeLists.txt file.
+#
+#=== Components ==============================================================
+# This library exports the following library targets, which you can link
+# against in your project:
+#
+#   adept-timing    C timing library; contains machine definitions of get_time_ns()
+#   adept-utils     Utility library; contains various other adept utilities.
+#
+# To link against these, just do, for example:
+#
+#   find_package(AdeptUtils REQUIRED)
+#   add_executable(foo foo.c)
+#   target_link_libraries(foo adept-timing)
+#
+# That's all!
 #
 if (NOT AdeptUtils_CONFIG_LOADED)
   set(AdeptUtils_CONFIG_LOADED TRUE)
@@ -31,16 +46,6 @@ if (NOT AdeptUtils_CONFIG_LOADED)
   set(AdeptUtils_INCLUDE_PATH @CMAKE_INSTALL_PREFIX@/include)
   set(AdeptUtils_LIB_PATH     @CMAKE_INSTALL_PREFIX@/lib)
 
-  # AdeptUtilsTiming library -- just the C timing calls.
-  add_library(AdeptUtilsTiming UNKNOWN IMPORTED)
-  set_target_properties(AdeptUtilsTiming PROPERTIES 
-    IMPORTED_LOCATION @CMAKE_INSTALL_PREFIX@/lib/@timing_LIBRARY@)
-
-  # Full AdeptUtils library -- include C++ classes.  This is automatically linked with 
-  # the dependent timing library.
-  add_library(AdeptUtils UNKNOWN IMPORTED)
-  set_target_properties(AdeptUtils PROPERTIES
-    IMPORTED_LOCATION @CMAKE_INSTALL_PREFIX@/lib/@adept-utils_LIBRARY@
-    IMPORTED_LINK_DEPENDENT_LIBRARIES AdeptUtilsTiming)
-
+  # Library targets imported from file
+  include(${AdeptUtils_CMAKE_DIR}/AdeptUtils-libs.cmake)
 endif()
