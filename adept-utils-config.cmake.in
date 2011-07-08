@@ -1,7 +1,7 @@
-# - AdeptUtils: ADEPT Utiltity Libraries
+# - adept-utils: ADEPT Utiltity Libraries
 #
 #=============================================================================
-# AdeptUtils is a library for code commonly used by LLNL tool projects.
+# adept-utils is a library for code commonly used by LLNL tool projects.
 # Currently it contains code for timing, dealing with matrices, and some
 # useful headers for dealing with the STL in C++ tools.
 #
@@ -9,15 +9,15 @@
 # This file allows Adept Utils to be automatically detected by other libraries
 # using CMake.  To build with Adept Utils, you can do one of two things:
 #
-#   1. Set the AdeptUtils_DIR environment variable to the root of the Adept Utils
-#      installation.  If you loaded AdeptUtils through a dotkit, this may already
-#      be set, and AdeptUtils will be autodetected by CMake.
+#   1. Set the adept-utils_DIR environment variable to the root of the Adept Utils
+#      installation.  If you loaded adept-utils through a dotkit, this may already
+#      be set, and adept-utils will be autodetected by CMake.
 #
 #   2. Configure your proeject with this option:
-#      -D AdeptUtils_DIR=/path/to/dir/containing/this/file
+#      -D adept-utils_DIR=/path/to/dir/containing/this/file
 #
 # If you have done either of these things, then CMake should automatically find
-# and include this file when you call find_package(AdeptUtils) from your
+# and include this file when you call find_package(adept-utils) from your
 # CMakeLists.txt file.
 #
 #=== Components ==============================================================
@@ -29,29 +29,29 @@
 #
 # To link against these, just do, for example:
 #
-#   find_package(AdeptUtils REQUIRED)
+#   find_package(adept-utils REQUIRED)
 #   add_executable(foo foo.c)
 #   target_link_libraries(foo adept-timing)
 #
 # That's all!
 #
-if (NOT AdeptUtils_CONFIG_LOADED)
-  set(AdeptUtils_CONFIG_LOADED TRUE)
+if (NOT adept-utils_CONFIG_LOADED)
+  set(adept-utils_CONFIG_LOADED TRUE)
 
   # Boost configuration found for this install of adept utils
-  set(AdeptUtils_HAVE_Boost         @Boost_FOUND@)
-  set(AdeptUtils_Boost_INCLUDE_DIRS @Boost_INCLUDE_DIRS@)
+  set(adept-utils_HAVE_Boost         @Boost_FOUND@)
+  set(adept-utils_Boost_INCLUDE_DIRS @Boost_INCLUDE_DIRS@)
 
   # Install layout
-  set(AdeptUtils_INSTALL_PREFIX @CMAKE_INSTALL_PREFIX@)
-  set(AdeptUtils_INCLUDE_DIR    ${AdeptUtils_INSTALL_PREFIX}/include)
-  set(AdeptUtils_LIB_DIR        ${AdeptUtils_INSTALL_PREFIX}/lib)
-  set(AdeptUtils_CMAKE_DIR      ${AdeptUtils_INSTALL_PREFIX}/lib/cmake/AdeptUtils)
+  set(adept-utils_INSTALL_PREFIX @CMAKE_INSTALL_PREFIX@)
+  set(adept-utils_INCLUDE_DIR    ${adept-utils_INSTALL_PREFIX}/include)
+  set(adept-utils_LIB_DIR        ${adept-utils_INSTALL_PREFIX}/lib)
+  set(adept-utils_CMAKE_DIR      ${adept-utils_INSTALL_PREFIX}/lib/cmake/adept-utils)
 
   # Includes needed to use Adept Utils
-  set(AdeptUtils_INCLUDE_PATH ${AdeptUtils_INCLUDE_DIR})
-  set(AdeptUtils_LIB_PATH     ${AdeptUtils_LIB_DIR})
+  set(adept-utils_INCLUDE_PATH ${adept-utils_INCLUDE_DIR})
+  set(adept-utils_LIB_PATH     ${adept-utils_LIB_DIR})
 
   # Library targets imported from file
-  include(${AdeptUtils_CMAKE_DIR}/AdeptUtils-libs.cmake)
+  include(${adept-utils_CMAKE_DIR}/adept-utils-libs.cmake)
 endif()

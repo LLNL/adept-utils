@@ -41,13 +41,6 @@ configure_file(
   ${PROJECT_BINARY_DIR}/adept-utils-config.h)
 install(FILES ${PROJECT_BINARY_DIR}/adept-utils-config.h DESTINATION include)
 
-# Configure subdirectories here, after everything else, so that they
-# inherit variables set in the global scope.
-add_subdirectory(timing)
-if (Boost_FOUND)
-  add_subdirectory(adept-utils)
-endif()
-
 # Configure a CMake file and set it to be installed.  This file tells other projects
 # how to use Adept Utils.
 foreach (lib adept-utils timing)
@@ -55,9 +48,18 @@ foreach (lib adept-utils timing)
   get_filename_component(${lib}_LIBRARY ${${lib}_LIBRARY_PATH} NAME)
 endforeach()
 configure_file(
-  ${PROJECT_SOURCE_DIR}/AdeptUtilsConfig.cmake.in
-  ${PROJECT_BINARY_DIR}/AdeptUtilsConfig.cmake
+  ${PROJECT_SOURCE_DIR}/adept-utils-config.cmake.in
+  ${PROJECT_BINARY_DIR}/adept-utils-config.cmake
   @ONLY)
 
-install(FILES ${PROJECT_BINARY_DIR}/AdeptUtilsConfig.cmake DESTINATION lib/cmake/AdeptUtils)
-install(EXPORT AdeptUtils-libs                             DESTINATION lib/cmake/AdeptUtils)
+install(FILES ${PROJECT_BINARY_DIR}/adept-utils-config.cmake DESTINATION lib/cmake/adept-utils)
+install(EXPORT adept-utils-libs                              DESTINATION lib/cmake/adept-utils)
+
+
+# Configure subdirectories here, after everything else, so that they
+# inherit variables set in the global scope.
+add_subdirectory(timing)
+if (Boost_FOUND)
+  add_subdirectory(adept-utils)
+endif()
+
