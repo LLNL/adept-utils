@@ -5,7 +5,7 @@
 // LLNL-CODE-417602
 // All rights reserved.  
 // 
-// This file is part of Libra. For details, see http://github.com/tgamblin/libra.
+// This file is part of Nami. For details, see http://github.com/tgamblin/nami.
 // Please also read the LICENSE file for further information.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are
@@ -29,76 +29,56 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /////////////////////////////////////////////////////////////////////////////////////////////////
-#include "matrix_utils.h"
+#ifndef WT_IO_UTILS_H
+#define WT_IO_UTILS_H
 
-#include <fstream>
+#include <stdint.h>
+#include <sys/stat.h>
+#include <cstdlib>
+#include <cassert>
 #include <iostream>
-using namespace std;
 
-namespace matrix_utils {
 
-  bool read_matrix(const char *filename, boost::numeric::ublas::matrix<double>& mat) {
-    ifstream file(filename);
-    if (file.fail()) return false;
-    
-    int cols = 0;
-    int rows = 0;
-    char c;
-    
-    // count cols on first line (assume same for following lines)
-    file.get(c);
-    while (file.good() && c != '\n') {
-      while (file.good() && c != '\n' && c == ' ') {
-        file.get(c);
-      }
-      if (c != '\n') {
-        cols++;
-      }
-      while (file.good() && c != '\n' && c != ' ') {
-        file.get(c);
-      }
-    }
-    
-    if (!file.good()) return false;
-    
-    // count remaining lines
-    while (file.good()) {
-      if (c == '\n') rows++;
-      file.get(c);
-    }
-    
-    file.close();  // close
-    file.clear();  // reset flags
-    file.open(filename);   // open at beginning.
-    
-    mat.resize(rows, cols);
-    string line;
-    for (int row=0; row < rows; row++) {
-      getline(file, line);
-      int pos = 0;
-      
-      for (int col=0; col < cols; col++) {
-        int start = line.find_first_not_of(" ", pos);
-        int end = line.find_first_of(" ", start);
-        mat(row,col) = strtod(&line[start], NULL);
-        pos = end;
-      }
-    }
-    
-    return true;
+
+namespace io_utils {
+
+  // test whether a file exists or not
+  inline bool exists(const char *filename) {
+    struct stat st;
+    return !stat(filename, &st);
   }
-  
-  
-  bool isDivisibleBy2(size_t n, int level) {
-    while (level != 0) {
-      if (n & ((size_t)0x1)) {
-        return false;
-      }
-      n >>= 1;
-      level--;
+
+
+  // Variable-length read and write routines for unsigned numbers.
+  size_t vl_write(std::ostream& out, unsigned long long size);
+  unsigned long long vl_read(std::istream& in);
+
+
+  /// Endian-agnostic write for integer types. This doesn't compress
+  /// like vl_write, but it handles signs.
+  template<class T>
+  size_t write_generic(std::ostream& out, T num) {
+    for (size_t i=0; i < sizeof(T); i++) {
+      unsigned char lo_bits = (num & 0xFF);
+      out.write((char*)&lo_bits, 1);
+      num >>= 8;
     }
-    
-    return true; 
+    return sizeof(T);
   }
-  
-}//namespace
+
+
+  /// Endian-agnostic read for integer types. This doesn't compress
+  /// like vl_write, but it handles signs.
+  template<class T>
+  T read_generic(std::istream& in) {
+    T num = 0;
+    for (size_t i=0; i < sizeof(T); i++) {
+      unsigned char byte;
+      in.read((char*)&byte, 1);
+      num |= ((T)byte) << (i<<3);
+    }
+    return num;
+  }
+} //namespace
+
+#endif // WT_IO_UTILS_H
