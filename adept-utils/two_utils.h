@@ -29,54 +29,81 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /////////////////////////////////////////////////////////////////////////////////////////////////
-#ifndef WT_IO_UTILS_H
-#define WT_IO_UTILS_H
+#ifndef ADEPT_TWO_UTILS_H_
+#define ADEPT_TWO_UTILS_H
 
-#include <stdint.h>
-#include <sys/stat.h>
-#include <cstdlib>
 #include <cassert>
-#include <iostream>
 
-namespace io_utils {
+namespace two_utils {
 
-  // test whether a file exists or not
-  inline bool exists(const char *filename) {
-    struct stat st;
-    return !stat(filename, &st);
+  /// Test for integral types to make sure they're powers of two.
+  template <class T>
+  bool is_power_of_2(T num) { 
+    return !(num & (num-1)); 
   }
-
-
-  // Variable-length read and write routines for unsigned numbers.
-  size_t vl_write(std::ostream& out, unsigned long long size);
-  unsigned long long vl_read(std::istream& in);
-
-
-  /// Endian-agnostic write for integer types. This doesn't compress
-  /// like vl_write, but it handles signs.
-  template<class T>
-  size_t write_generic(std::ostream& out, T num) {
-    for (size_t i=0; i < sizeof(T); i++) {
-      unsigned char lo_bits = (num & 0xFF);
-      out.write((char*)&lo_bits, 1);
-      num >>= 8;
-    }
-    return sizeof(T);
-  }
-
-
-  /// Endian-agnostic read for integer types. This doesn't compress
-  /// like vl_write, but it handles signs.
-  template<class T>
-  T read_generic(std::istream& in) {
-    T num = 0;
-    for (size_t i=0; i < sizeof(T); i++) {
-      unsigned char byte;
-      in.read((char*)&byte, 1);
-      num |= ((T)byte) << (i<<3);
-    }
+  
+  /// Returns least power of two greater than or equal to num
+  inline uint64_t ge_power_of_2(uint64_t num) {
+    num--;
+    num |= (num >> 1);  // these fill with ones.
+    num |= (num >> 2);
+    num |= (num >> 4);
+    num |= (num >> 8);
+    num |= (num >> 16);
+    num |= (num >> 32);
+    num++;
     return num;
   }
-} //namespace
 
-#endif // WT_IO_UTILS_H
+  /// Returns greatest power of two less than or equal to num
+  inline uint64_t le_power_of_2(uint64_t num) {
+    num |= (num >> 1);  // these fill with ones.
+    num |= (num >> 2);
+    num |= (num >> 4);
+    num |= (num >> 8);
+    num |= (num >> 16);
+    num |= (num >> 32);
+    return num - (num >> 1);
+  }
+
+  /// Takes the log base 2 of a power of 2, returns a char.
+  /// Returns -1 if 0 is passed in.
+  inline signed char log2_pow2(unsigned long long powerOf2) {
+    // make sure it's a power of 2.
+    assert(is_power_of_2(powerOf2));
+    
+    signed char n = -1;
+    while (powerOf2 > 0) {
+      powerOf2 >>= 1;
+      n++;
+    }
+
+    return n;
+  }
+
+  /// Inline function to determine if a number is divisible by 2.
+  inline bool even(uint64_t num) {
+    return !(num & 1);
+  }
+
+  /// Inline function to determine if a number is divisible by 2.
+  inline bool odd(uint64_t num) {
+    return (num & 1);
+  }
+
+  /// Return number of times a number is divisible by 2
+  /// NOTE: This returns 0 for odd numbers AND for 0.
+  /// TODO: Possibly optimize using __builtin_ctz if it's available.
+  inline int times_divisible_by_2(uint64_t n) {
+    if (n == 0) return 0;
+
+    size_t count;
+    for (count=0; !(n & 1); count++) {
+      n >>= 1;
+    }
+    return count;
+  }
+
+} // namespace nami
+
+#endif // ADEPT_TWO_UTILS_H

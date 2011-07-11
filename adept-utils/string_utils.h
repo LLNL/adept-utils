@@ -5,7 +5,7 @@
 // LLNL-CODE-417602
 // All rights reserved.  
 // 
-// This file is part of Nami. For details, see http://github.com/tgamblin/nami.
+// This file is part of Libra. For details, see http://github.com/tgamblin/libra.
 // Please also read the LICENSE file for further information.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are
@@ -29,54 +29,28 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /////////////////////////////////////////////////////////////////////////////////////////////////
-#ifndef WT_IO_UTILS_H
-#define WT_IO_UTILS_H
+#ifndef STRING_UTILS_H
+#define STRING_UTILS_H
 
-#include <stdint.h>
-#include <sys/stat.h>
-#include <cstdlib>
-#include <cassert>
-#include <iostream>
+#include <string>
+#include <vector>
 
-namespace io_utils {
+namespace stringutils {
 
-  // test whether a file exists or not
-  inline bool exists(const char *filename) {
-    struct stat st;
-    return !stat(filename, &st);
-  }
+  /// Breaks a string into substrings using ANY characters in <delim> as delimiters.
+  /// For example, to split a string by commas and whitespace, use ", " for delim.
+  void split(const std::string& str, const std::string& delim, std::vector<std::string>& parts);
 
+  /// Breaks a string into substrings using only the exact string <delim> as a delimiter.
+  /// For example, to split a string by "=>", pass "=>".  
+  void split_str(const std::string& str, const std::string& delim, std::vector<std::string>& parts);
 
-  // Variable-length read and write routines for unsigned numbers.
-  size_t vl_write(std::ostream& out, unsigned long long size);
-  unsigned long long vl_read(std::istream& in);
+  /// Trims any characters in <chars> off both ends of a string and returns the result.
+  std::string trim(const std::string& str, const std::string chars = " ");
+  
+  /// Creates a string containing n times a particular string
+  std::string times(const std::string& str, size_t n);
 
+} // namespace
 
-  /// Endian-agnostic write for integer types. This doesn't compress
-  /// like vl_write, but it handles signs.
-  template<class T>
-  size_t write_generic(std::ostream& out, T num) {
-    for (size_t i=0; i < sizeof(T); i++) {
-      unsigned char lo_bits = (num & 0xFF);
-      out.write((char*)&lo_bits, 1);
-      num >>= 8;
-    }
-    return sizeof(T);
-  }
-
-
-  /// Endian-agnostic read for integer types. This doesn't compress
-  /// like vl_write, but it handles signs.
-  template<class T>
-  T read_generic(std::istream& in) {
-    T num = 0;
-    for (size_t i=0; i < sizeof(T); i++) {
-      unsigned char byte;
-      in.read((char*)&byte, 1);
-      num |= ((T)byte) << (i<<3);
-    }
-    return num;
-  }
-} //namespace
-
-#endif // WT_IO_UTILS_H
+#endif //STRING_UTILS_H

@@ -1,11 +1,14 @@
 set(ADEPT_UTILS_SOURCES
   Timer.cpp
   io_utils.cpp
-  matrix_utils.cpp)
+  matrix_utils.cpp
+  string_utils.cpp)
 
 set(ADEPT_UTILS_HEADERS
   Timer.h
   io_utils.h
+  two_utils.h
+  string_utils.h
   matrix_utils.h
   mpi_utils.h
   stl_utils.h)

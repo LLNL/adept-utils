@@ -5,7 +5,7 @@
 // LLNL-CODE-417602
 // All rights reserved.  
 // 
-// This file is part of Nami. For details, see http://github.com/tgamblin/nami.
+// This file is part of Libra. For details, see http://github.com/tgamblin/libra.
 // Please also read the LICENSE file for further information.
 // 
 // Redistribution and use in source and binary forms, with or without modification, are
@@ -29,54 +29,67 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
 // ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /////////////////////////////////////////////////////////////////////////////////////////////////
-#ifndef WT_IO_UTILS_H
-#define WT_IO_UTILS_H
-
-#include <stdint.h>
-#include <sys/stat.h>
-#include <cstdlib>
-#include <cassert>
+#include "string_utils.h"
 #include <iostream>
+#include <sstream>
+using namespace std;
 
-namespace io_utils {
-
-  // test whether a file exists or not
-  inline bool exists(const char *filename) {
-    struct stat st;
-    return !stat(filename, &st);
-  }
-
-
-  // Variable-length read and write routines for unsigned numbers.
-  size_t vl_write(std::ostream& out, unsigned long long size);
-  unsigned long long vl_read(std::istream& in);
-
-
-  /// Endian-agnostic write for integer types. This doesn't compress
-  /// like vl_write, but it handles signs.
-  template<class T>
-  size_t write_generic(std::ostream& out, T num) {
-    for (size_t i=0; i < sizeof(T); i++) {
-      unsigned char lo_bits = (num & 0xFF);
-      out.write((char*)&lo_bits, 1);
-      num >>= 8;
+namespace stringutils {
+  void split(const string& str, const string& delim, vector<string>& parts) {
+    size_t start, end = 0;
+    
+    while (end < str.size()) {
+      start = end;
+      while (start < str.size() && (delim.find(str[start]) != string::npos))
+        start++;  // skip initial whitespace
+      
+      end = start;
+      while (end < str.size() && (delim.find(str[end]) == string::npos))
+        end++; // skip to end of word
+      
+      if (end-start != 0) {  // just ignore zero-length strings.
+        parts.push_back(string(str, start, end-start));
+      }
     }
-    return sizeof(T);
   }
 
+  void split_str(const string& str, const string& delim, vector<string>& parts) {
+    size_t start = 0;
+    size_t end = 0;
+    
+    while (start < str.size()) {
+      end = str.find(delim, start);
+      if (end == string::npos) end = str.size();
 
-  /// Endian-agnostic read for integer types. This doesn't compress
-  /// like vl_write, but it handles signs.
-  template<class T>
-  T read_generic(std::istream& in) {
-    T num = 0;
-    for (size_t i=0; i < sizeof(T); i++) {
-      unsigned char byte;
-      in.read((char*)&byte, 1);
-      num |= ((T)byte) << (i<<3);
+      if (end-start != 0) {  // just ignore zero-length strings.
+        parts.push_back(string(str, start, end-start));
+      }
+      
+      start = end + delim.size();
     }
-    return num;
   }
-} //namespace
 
-#endif // WT_IO_UTILS_H
+  string trim(const string& str, const string chars) {
+    size_t start = 0;
+    size_t end = str.size();
+    
+    while (start < str.size() && chars.find(str[start]) != string::npos) 
+      start++;
+    
+    while (end > 0 && chars.find(str[end-1]) != string::npos) {
+      end--;
+    }
+    
+    return string(str, start, end - start);
+  }
+
+  string times(const string& str, size_t n) {
+    ostringstream s;
+    for (size_t i=0; i < n; i++) {
+      s << str;
+    }
+    return s.str();
+  }
+
+}  // namespace
+
