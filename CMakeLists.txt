@@ -48,12 +48,12 @@ foreach (lib adept-utils timing)
   get_filename_component(${lib}_LIBRARY ${${lib}_LIBRARY_PATH} NAME)
 endforeach()
 configure_file(
-  ${PROJECT_SOURCE_DIR}/adept-utils-config.cmake.in
-  ${PROJECT_BINARY_DIR}/adept-utils-config.cmake
+  ${PROJECT_SOURCE_DIR}/adept_utils-config.cmake.in
+  ${PROJECT_BINARY_DIR}/adept_utils-config.cmake
   @ONLY)
 
-install(FILES ${PROJECT_BINARY_DIR}/adept-utils-config.cmake DESTINATION lib/cmake/adept-utils)
-install(EXPORT adept-utils-libs                              DESTINATION lib/cmake/adept-utils)
+install(FILES ${PROJECT_BINARY_DIR}/adept_utils-config.cmake DESTINATION share/cmake/adept_utils)
+install(EXPORT adept_utils-libs                              DESTINATION share/cmake/adept_utils)
 
 
 # Configure subdirectories here, after everything else, so that they

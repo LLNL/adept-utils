@@ -53,5 +53,5 @@ if (NOT adept_utils_CONFIG_LOADED)
   set(adept_utils_LIB_PATH     ${adept_utils_LIB_DIR})
 
   # Library targets imported from file
-  include(${adept_utils_CMAKE_DIR}/adept-utils-libs.cmake)
+  include(${adept_utils_CMAKE_DIR}/adept_utils-libs.cmake)
 endif()

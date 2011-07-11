@@ -15,7 +15,7 @@ set(ADEPT_UTILS_HEADERS
 
 add_library(adept-utils ${ADEPT_UTILS_SOURCES})
 target_link_libraries(adept-utils adept-timing)
-install(TARGETS adept-utils DESTINATION lib EXPORT adept-utils-libs)
+install(TARGETS adept-utils DESTINATION lib EXPORT adept_utils-libs)
 install(FILES ${ADEPT_UTILS_HEADERS} DESTINATION include)
 
 include_directories(
