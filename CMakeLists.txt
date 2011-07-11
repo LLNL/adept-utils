@@ -43,10 +43,6 @@ install(FILES ${PROJECT_BINARY_DIR}/adept-utils-config.h DESTINATION include)
 
 # Configure a CMake file and set it to be installed.  This file tells other projects
 # how to use Adept Utils.
-foreach (lib adept-utils timing)
-  get_target_property(${lib}_LIBRARY_PATH ${lib} LOCATION)
-  get_filename_component(${lib}_LIBRARY ${${lib}_LIBRARY_PATH} NAME)
-endforeach()
 configure_file(
   ${PROJECT_SOURCE_DIR}/adept_utils-config.cmake.in
   ${PROJECT_BINARY_DIR}/adept_utils-config.cmake
@@ -62,4 +58,3 @@ add_subdirectory(timing)
 if (Boost_FOUND)
   add_subdirectory(adept-utils)
 endif()
-

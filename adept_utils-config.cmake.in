@@ -46,7 +46,7 @@ if (NOT adept_utils_CONFIG_LOADED)
   set(adept_utils_INSTALL_PREFIX @CMAKE_INSTALL_PREFIX@)
   set(adept_utils_INCLUDE_DIR    ${adept_utils_INSTALL_PREFIX}/include)
   set(adept_utils_LIB_DIR        ${adept_utils_INSTALL_PREFIX}/lib)
-  set(adept_utils_CMAKE_DIR      ${adept_utils_INSTALL_PREFIX}/lib/cmake/adept-utils)
+  set(adept_utils_CMAKE_DIR      ${adept_utils_INSTALL_PREFIX}/share/cmake/adept_utils)
 
   # Includes needed to use Adept Utils
   set(adept_utils_INCLUDE_PATH ${adept_utils_INCLUDE_DIR})

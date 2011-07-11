@@ -1,8 +1,8 @@
 set(ADEPT_UTILS_SOURCES
   Timer.cpp
   io_utils.cpp
-  matrix_utils.cpp
-  string_utils.cpp)
+  string_utils.cpp
+  matrix_utils.cpp)
 
 set(ADEPT_UTILS_HEADERS
   Timer.h
@@ -13,9 +13,9 @@ set(ADEPT_UTILS_HEADERS
   mpi_utils.h
   stl_utils.h)
 
-add_library(adept-utils ${ADEPT_UTILS_SOURCES})
-target_link_libraries(adept-utils adept-timing)
-install(TARGETS adept-utils DESTINATION lib EXPORT adept_utils-libs)
+add_library(adept_utils ${ADEPT_UTILS_SOURCES})
+target_link_libraries(adept_utils adept_timing)
+install(TARGETS adept_utils DESTINATION lib EXPORT adept_utils-libs)
 install(FILES ${ADEPT_UTILS_HEADERS} DESTINATION include)
 
 include_directories(
