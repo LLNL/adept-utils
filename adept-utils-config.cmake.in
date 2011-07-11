@@ -35,23 +35,23 @@
 #
 # That's all!
 #
-if (NOT adept-utils_CONFIG_LOADED)
-  set(adept-utils_CONFIG_LOADED TRUE)
+if (NOT adept_utils_CONFIG_LOADED)
+  set(adept_utils_CONFIG_LOADED TRUE)
 
   # Boost configuration found for this install of adept utils
-  set(adept-utils_HAVE_Boost         @Boost_FOUND@)
-  set(adept-utils_Boost_INCLUDE_DIRS @Boost_INCLUDE_DIRS@)
+  set(adept_utils_HAVE_Boost         @Boost_FOUND@)
+  set(adept_utils_Boost_INCLUDE_DIRS @Boost_INCLUDE_DIRS@)
 
   # Install layout
-  set(adept-utils_INSTALL_PREFIX @CMAKE_INSTALL_PREFIX@)
-  set(adept-utils_INCLUDE_DIR    ${adept-utils_INSTALL_PREFIX}/include)
-  set(adept-utils_LIB_DIR        ${adept-utils_INSTALL_PREFIX}/lib)
-  set(adept-utils_CMAKE_DIR      ${adept-utils_INSTALL_PREFIX}/lib/cmake/adept-utils)
+  set(adept_utils_INSTALL_PREFIX @CMAKE_INSTALL_PREFIX@)
+  set(adept_utils_INCLUDE_DIR    ${adept_utils_INSTALL_PREFIX}/include)
+  set(adept_utils_LIB_DIR        ${adept_utils_INSTALL_PREFIX}/lib)
+  set(adept_utils_CMAKE_DIR      ${adept_utils_INSTALL_PREFIX}/lib/cmake/adept-utils)
 
   # Includes needed to use Adept Utils
-  set(adept-utils_INCLUDE_PATH ${adept-utils_INCLUDE_DIR})
-  set(adept-utils_LIB_PATH     ${adept-utils_LIB_DIR})
+  set(adept_utils_INCLUDE_PATH ${adept_utils_INCLUDE_DIR})
+  set(adept_utils_LIB_PATH     ${adept_utils_LIB_DIR})
 
   # Library targets imported from file
-  include(${adept-utils_CMAKE_DIR}/adept-utils-libs.cmake)
+  include(${adept_utils_CMAKE_DIR}/adept-utils-libs.cmake)
 endif()
