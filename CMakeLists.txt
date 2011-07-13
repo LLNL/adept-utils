@@ -57,4 +57,4 @@ install(EXPORT adept_utils-libs                              DESTINATION share/c
 
 # Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.
-add_subdirectory(adept-utils)
+add_subdirectory(src)
