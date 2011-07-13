@@ -17,10 +17,6 @@ set(ADEPT_UTILS_VERSION "${ADEPT_UTILS_MAJOR_VERSION}.${ADEPT_UTILS_MINOR_VERSIO
 get_property(DEFAULT_SHARED GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS)
 option(BUILD_SHARED_LIBS "Build shared libraries?" ${DEFAULT_SHARED})
 
-# RPATH setup.  Default is to rpath everything.  Set the option to
-# false if you don't want this behavior.
-option(CMAKE_INSTALL_RPATH_USE_LINK_PATH "Add rpath for all dependencies." TRUE)
-
 # Check for various timing functions, so we can support highest-resolution timers available.
 include(CheckFunctionExists)
 
@@ -61,7 +57,4 @@ install(EXPORT adept_utils-libs                              DESTINATION share/c
 
 # Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.
-add_subdirectory(timing)
-if (Boost_FOUND)
-  add_subdirectory(adept-utils)
-endif()
+add_subdirectory(adept-utils)
