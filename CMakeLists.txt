@@ -21,7 +21,10 @@ option(BUILD_SHARED_LIBS "Build shared libraries?" ${DEFAULT_SHARED})
 include(CheckFunctionExists)
 
 # Muster requires boost for matrices and random number generators.
-find_package(Boost)
+find_package(Boost NO_MODULE)
+if(NOT Boost_FOUND)
+  find_package(Boost)
+endif()
 
 set(CMAKE_REQUIRED_INCLUDES  time.h sys/time.h)
 set(CMAKE_REQUIRED_LIBRARIES rt)
