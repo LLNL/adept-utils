@@ -21,7 +21,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries?" ${DEFAULT_SHARED})
 include(CheckFunctionExists)
 
 # Muster requires boost for matrices and random number generators.
-find_package(Boost NO_MODULE)
+find_package(Boost NO_MODULE QUIET)
 if(NOT Boost_FOUND)
   find_package(Boost)
 endif()
