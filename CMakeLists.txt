@@ -71,4 +71,5 @@ install(EXPORT adept_utils-libs                              DESTINATION share/c
 add_subdirectory(timing)
 add_subdirectory(cutils)
 add_subdirectory(utils)
+add_subdirectory(test)
 
