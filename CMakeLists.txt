@@ -36,6 +36,7 @@ endif()
 
 # Check for various timing functions, so we can support highest-resolution timers available.
 include(CheckFunctionExists)
+include(CheckSymbolExists)
 
 set(CMAKE_REQUIRED_INCLUDES  time.h sys/time.h)
 set(CMAKE_REQUIRED_LIBRARIES rt)
@@ -48,6 +49,8 @@ check_function_exists(gettimeofday ADEPT_UTILS_HAVE_GETTIMEOFDAY)
 set(CMAKE_REQUIRED_INCLUDES  mach/mach.h mach/mach_time.h)
 unset(CMAKE_REQUIRED_LIBRARIES)
 check_function_exists(mach_absolute_time ADEPT_UTILS_HAVE_MACH_TIME)
+
+check_symbol_exists(_r_debug link.h ADEPT_UTILS_HAVE_RDEBUG)
 
 # Configure a header file with all the variables we found.
 configure_file(
@@ -69,7 +72,9 @@ install(EXPORT adept_utils-libs                              DESTINATION share/c
 # Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.
 add_subdirectory(timing)
-add_subdirectory(cutils)
+if (ADEPT_UTILS_HAVE_RDEBUG)
+  add_subdirectory(cutils)
+endif()
 add_subdirectory(utils)
 add_subdirectory(test)
 
