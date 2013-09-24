@@ -8,7 +8,7 @@ if (Boost_FOUND)
     io_utils.cpp
     string_utils.cpp
     matrix_utils.cpp)
-  
+
   set(ADEPT_UTILS_HEADERS
     Timer.h
     io_utils.h
@@ -22,7 +22,7 @@ if (Boost_FOUND)
   target_link_libraries(adept_utils adept_timing)
   install(TARGETS adept_utils DESTINATION lib EXPORT adept_utils-libs)
   install(FILES ${ADEPT_UTILS_HEADERS} DESTINATION include)
-  
+
   include_directories(
     ${Boost_INCLUDE_DIR}
     ${PROJECT_BINARY_DIR}
