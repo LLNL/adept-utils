@@ -13,20 +13,10 @@ set(ADEPT_UTILS_MINOR_VERSION 1)
 set(ADEPT_UTILS_PATCH_VERSION 0)
 set(ADEPT_UTILS_VERSION "${ADEPT_UTILS_MAJOR_VERSION}.${ADEPT_UTILS_MINOR_VERSION}.${ADEPT_UTILS_PATCH_VERSION}")
 
-function(use_c99_for_target target)
-    # Force a C99 build.
-    if (CMAKE_C_COMPILER_ID STREQUAL XL)
-      set_target_properties(${target} PROPERTIES COMPILE_FLAGS "-qlanglvl=extc99")
-    elseif(CMAKE_COMPILER_ID STREQUAL Intel)
-      set_target_properties(${target} PROPERTIES COMPILE_FLAGS "-std=c99")
-    else()
-      set_target_properties(${target} PROPERTIES COMPILE_FLAGS "-std=gnu99")
-    endif()
-endfunction()
-
-# Build shared libraries by default.
-get_property(DEFAULT_SHARED GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS)
-option(BUILD_SHARED_LIBS "Build shared libraries?" ${DEFAULT_SHARED})
+# Add our module directory to the include path.
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+include(StaticAndShared)
+include(C99Support)
 
 # Muster requires boost for matrices and random number generators.
 find_package(Boost NO_MODULE QUIET)
