@@ -139,7 +139,7 @@ timing_t get_time_ns() {
   return timebase * BGQ_NS_PER_CYCLE;
 }
 
-#elif (defined(ADEPT_UTILS_HAVECLOCK_GETTIME) || defined(ADEPT_UTILS_HAVELIBRT))
+#elif defined(ADEPT_UTILS_HAVE_CLOCK_GETTIME)
 // -------------------------------------------------------- //
 // Timing code using Linux hires timers.
 // -------------------------------------------------------- //
