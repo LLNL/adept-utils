@@ -39,22 +39,22 @@
 using namespace std;
 
 
-Timer::Timer() : start(get_time_ns()), last(start) { }
+Timer::Timer() : t_start(get_time_ns()), t_last(t_start) { }
 
 
 Timer::Timer(const Timer& other): 
   timings(other.timings),
   order(other.order),
-  start(other.start),
-  last(other.last) 
+  t_start(other.t_start),
+  t_last(other.t_last) 
 { }
 
 
 Timer& Timer::operator=(const Timer& other) {
   timings = other.timings;
   order = other.order;
-  start = other.start;
-  last = other.last;
+  t_start = other.t_start;
+  t_last = other.t_last;
   return *this;
 }
 
@@ -65,19 +65,19 @@ Timer::~Timer() { }
 void Timer::clear() {
   order.clear();
   timings.clear();
-  start = get_time_ns();
-  last = start;
+  t_start = get_time_ns();
+  t_last = t_start;
 }
 
 
 void Timer::fast_forward() { 
-  last = get_time_ns(); 
+  t_last = get_time_ns(); 
 }
 
 
 void Timer::record(const string& name) {
   timing_t now = get_time_ns();
-  timing_t elapsed = now - last;
+  timing_t elapsed = now - t_last;
 
   timing_map::iterator i = timings.find(name);
   if (i == timings.end()) {
@@ -85,7 +85,15 @@ void Timer::record(const string& name) {
   }
   timings[name] += elapsed;
 
-  last = now;
+  t_last = now;
+}
+
+void Timer::start(const string& name) {
+  fast_forward();
+}
+
+void Timer::stop(const string& name) {
+  record(name);
 }
 
 
@@ -114,10 +122,10 @@ void Timer::write(std::ostream& out, bool print_total) const {
   for (size_t i=0; i < order.size(); i++) {
     ostringstream name;
     name << order[i] << ":";
-    out << left << setw(width) << name.str() << (get(order[i]) / 1e9) << endl;
+    out << left << setw(width) << name.str() << std::fixed << setprecision(12) << (get(order[i]) / 1e9) << endl;
   }
   
-  if (print_total) out << left << setw(width) << total << ((now - start) / 1e9) << endl;
+  if (print_total) out << left << setw(width) << total << ((now - t_start) / 1e9) << endl;
 }
 
 
