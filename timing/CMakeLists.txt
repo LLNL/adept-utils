@@ -13,6 +13,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL BlueGeneL)
   include_directories(/bgl/BlueLight/ppcfloor/bglsys/include)
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+  target_link_libraries(adept_timing rt)
+endif()
+
 include_directories(${PROJECT_BINARY_DIR}
 /bgsys/drivers/ppcfloor/spi/include/kernel/cnk
 )
