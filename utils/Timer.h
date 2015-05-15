@@ -42,7 +42,7 @@
 #include <string>
 #include <iostream>
 
-#include "timing.h"
+#include <hires-timers.h>
 
 ///
 /// Class for timing labeled regions of code.

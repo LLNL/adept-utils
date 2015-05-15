@@ -2,6 +2,10 @@
 # Adept Utils library is C++, this includes utils headers, etc.
 # Requires boost, so only build if boost is available.
 #
+
+find_package(LLNL_HIRES_TIMERS REQUIRED)
+
+
 if (Boost_FOUND)
   set(ADEPT_UTILS_SOURCES
     Timer.cpp
@@ -18,8 +22,11 @@ if (Boost_FOUND)
     mpi_utils.h
     stl_utils.h)
 
+    include_directories(${LLNL_HIRES_TIMERS_INCLUDE_DIRS})
+
   add_static_and_shared_library(adept_utils ${ADEPT_UTILS_SOURCES})
-  target_link_libraries(adept_utils adept_timing)
+  target_link_libraries(adept_utils ${LLNL_HIRES_TIMERS_LIBRARIES})
+  target_link_libraries(adept_utils_static ${LLNL_HIRES_TIMERS_LIBRARIES})
 
   install(TARGETS adept_utils adept_utils_static
           DESTINATION lib EXPORT adept_utils-libs)
