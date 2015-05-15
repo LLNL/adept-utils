@@ -6,8 +6,15 @@ before_install:
   - sudo add-apt-repository ppa:kalakris/cmake -y
   - sudo apt-get update -qq
   - sudo apt-get install cmake
+install:
   - sudo apt-get install libboost-all-dev
+  - cd ..
+  - git clone https://github.com/scalability-llnl/llnl-hires-timers.git
+  - cd llnl-hires-timers && mkdir build && cd build
+  - cmake .. -DCMAKE_INSTALL_PREFIX=../install
+  - make install
+  - cd ../../adept-utils
 script:
   - mkdir build && cd build
-  - cmake ..
+  - cmake .. -DCMAKE_PREFIX_PATH=../../llnl-hires-timers/install
   - make
