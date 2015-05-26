@@ -55,41 +55,57 @@
 
 
 #
-# Adept Utils library is C++, this includes utils headers, etc.
-# Requires boost, so only build if boost is available.
+# include required modules
 #
+include(StaticAndShared)
 
+
+#
+# search for required modules
+#
 find_package(LLNL_HIRES_TIMERS REQUIRED)
+find_package(Boost REQUIRED)
 
 
-if (Boost_FOUND)
-  set(ADEPT_UTILS_SOURCES
-    Timer.cpp
-    io_utils.cpp
-    string_utils.cpp
-    matrix_utils.cpp)
+#
+# Build Adept Utils library.
+#
+set(ADEPT_UTILS_SOURCES
+	Timer.cpp
+	io_utils.cpp
+	string_utils.cpp
+	matrix_utils.cpp
+)
 
-  set(ADEPT_UTILS_HEADERS
-    Timer.h
-    io_utils.h
-    two_utils.h
-    string_utils.h
-    matrix_utils.h
-    mpi_utils.h
-    stl_utils.h)
+set(ADEPT_UTILS_HEADERS
+	Timer.h
+	io_utils.h
+	two_utils.h
+	string_utils.h
+	matrix_utils.h
+	mpi_utils.h
+	stl_utils.h
+)
 
-    include_directories(${LLNL_HIRES_TIMERS_INCLUDE_DIRS})
 
-  add_static_and_shared_library(adept_utils ${ADEPT_UTILS_SOURCES})
-  target_link_libraries(adept_utils ${LLNL_HIRES_TIMERS_LIBRARIES})
-  target_link_libraries(adept_utils_static ${LLNL_HIRES_TIMERS_LIBRARIES})
+# include directories for compiling
+include_directories(
+	${LLNL_HIRES_TIMERS_INCLUDE_DIRS}
+	${Boost_INCLUDE_DIR}
+)
 
-  install(TARGETS adept_utils adept_utils_static
-          DESTINATION lib EXPORT adept_utils-libs)
-  install(FILES ${ADEPT_UTILS_HEADERS} DESTINATION include)
+# build static and shared library
+add_static_and_shared_library(adept_utils ${ADEPT_UTILS_SOURCES})
 
-  include_directories(
-    ${Boost_INCLUDE_DIR}
-    ${PROJECT_BINARY_DIR}
-    ${PROJECT_SOURCE_DIR}/timing)
-endif()
+# link against LLNL hires-timers
+target_link_libraries(adept_utils ${LLNL_HIRES_TIMERS_LIBRARIES})
+target_link_libraries(adept_utils_static ${LLNL_HIRES_TIMERS_LIBRARIES})
+
+# install
+install(TARGETS adept_utils adept_utils_static
+	DESTINATION lib
+	EXPORT adept_utils-libs
+)
+install(FILES ${ADEPT_UTILS_HEADERS}
+	DESTINATION include
+)

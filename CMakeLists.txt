@@ -73,25 +73,13 @@ set(ADEPT_UTILS_VERSION "${ADEPT_UTILS_MAJOR_VERSION}.${ADEPT_UTILS_MINOR_VERSIO
 
 # Add our module directory to the include path.
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
-include(StaticAndShared)
-include(C99Support)
+
 
 # Muster requires boost for matrices and random number generators.
 find_package(Boost NO_MODULE QUIET)
 if(NOT Boost_FOUND)
   find_package(Boost)
 endif()
-
-# Check for various timing functions, so we can support highest-resolution timers available.
-include(CheckSymbolExists)
-
-check_symbol_exists(_r_debug link.h ADEPT_UTILS_HAVE_RDEBUG)
-
-# Configure a header file with all the variables we found.
-configure_file(
-  ${PROJECT_SOURCE_DIR}/adept-utils-config.h.in
-  ${PROJECT_BINARY_DIR}/adept-utils-config.h)
-install(FILES ${PROJECT_BINARY_DIR}/adept-utils-config.h DESTINATION include)
 
 # Configure a CMake file and set it to be installed.  This file tells other projects
 # how to use Adept Utils.
@@ -106,7 +94,5 @@ install(EXPORT adept_utils-libs                              DESTINATION share/c
 
 # Configure subdirectories here, after everything else, so that they
 # inherit variables set in the global scope.
-if (ADEPT_UTILS_HAVE_RDEBUG)
-  add_subdirectory(cutils)
-endif()
+add_subdirectory(cutils)
 add_subdirectory(utils)
