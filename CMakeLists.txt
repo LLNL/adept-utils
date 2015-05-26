@@ -54,8 +54,18 @@
 # All rights reserved.
 
 
-project(adept-utils)
+# minimum required CMake version
 cmake_minimum_required(VERSION 2.8)
+
+
+#
+# project information
+#
+if (${CMAKE_MAJOR_VERSION} EQUAL 3)
+	project("adept-utils" LANGUAGES C CXX)
+else ()
+	project("adept-utils" C CXX)
+endif ()
 
 
 # choose new behaviour for CMP0042
@@ -65,34 +75,35 @@ if (POLICY CMP0042)
 endif (POLICY CMP0042)
 
 
-# Version information comes from here.  Incrememnt these when new stuff happens.
+#
+# cmake configuration
+#
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+
+
+#
+# Version information comes from here. Incrememnt these when new stuff happens.
+#
 set(ADEPT_UTILS_MAJOR_VERSION 0)
 set(ADEPT_UTILS_MINOR_VERSION 1)
 set(ADEPT_UTILS_PATCH_VERSION 0)
 set(ADEPT_UTILS_VERSION "${ADEPT_UTILS_MAJOR_VERSION}.${ADEPT_UTILS_MINOR_VERSION}.${ADEPT_UTILS_PATCH_VERSION}")
 
-# Add our module directory to the include path.
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
-
 
 # Muster requires boost for matrices and random number generators.
-find_package(Boost NO_MODULE QUIET)
-if(NOT Boost_FOUND)
-  find_package(Boost)
-endif()
+find_package(Boost)
 
-# Configure a CMake file and set it to be installed.  This file tells other projects
-# how to use Adept Utils.
-configure_file(
-  ${PROJECT_SOURCE_DIR}/adept_utils-config.cmake.in
-  ${PROJECT_BINARY_DIR}/adept_utils-config.cmake
-  @ONLY)
-
-install(FILES ${PROJECT_BINARY_DIR}/adept_utils-config.cmake DESTINATION share/cmake/adept_utils)
-install(EXPORT adept_utils-libs                              DESTINATION share/cmake/adept_utils)
+# Configure a CMake file and set it to be installed. This file tells other
+# projects how to use Adept Utils.
+configure_file(adept_utils-config.cmake.in adept_utils-config.cmake @ONLY)
+install(FILES ${PROJECT_BINARY_DIR}/adept_utils-config.cmake
+	DESTINATION share/cmake/adept_utils
+)
+install(EXPORT adept_utils-libs DESTINATION share/cmake/adept_utils)
 
 
-# Configure subdirectories here, after everything else, so that they
-# inherit variables set in the global scope.
+#
+# recurse into subdirectories
+#
 add_subdirectory(cutils)
 add_subdirectory(utils)
