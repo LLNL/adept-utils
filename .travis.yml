@@ -16,5 +16,5 @@ install:
   - cd ../../adept-utils
 script:
   - mkdir build && cd build
-  - cmake .. -DCMAKE_PREFIX_PATH=../../llnl-hires-timers/install
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=../../llnl-hires-timers/install
   - make
