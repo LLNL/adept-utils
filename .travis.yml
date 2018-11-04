@@ -9,22 +9,28 @@
 # See the LICENSE file in the package base directory for details.
 
 language: c
+
 compiler:
   - gcc
   - clang
-before_install:
-  - sudo add-apt-repository ppa:kalakris/cmake -y
-  - sudo apt-get update -qq
-  - sudo apt-get install cmake
+
+addons:
+  apt:
+    packages:
+    - cmake
+    - libboost-math-dev
+
+
 install:
-  - sudo apt-get install libboost-math-dev
   - cd ..
   - git clone https://github.com/scalability-llnl/llnl-hires-timers.git
   - cd llnl-hires-timers && mkdir build && cd build
   - cmake .. -DCMAKE_INSTALL_PREFIX=../install
   - make install
   - cd ../../adept-utils
+
 script:
   - mkdir build && cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=../../llnl-hires-timers/install
+  - cmake .. -DCMAKE_BUILD_TYPE=Debug
+             -DCMAKE_PREFIX_PATH=../../llnl-hires-timers/install
   - make
