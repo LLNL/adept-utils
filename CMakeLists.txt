@@ -9,7 +9,7 @@
 # See the LICENSE file in the package base directory for details.
 
 # minimum required CMake version
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 
 
 #
